@@ -28,6 +28,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public final class MServerConfigUI {
   // logger setup in start
@@ -95,11 +96,11 @@ public final class MServerConfigUI {
 
 
   void start(final String[] aProgramAgruments) {
-    if (!MServerCommandLine.validateArgs(aProgramAgruments)) {
-      MServerCommandLine.print();
+    final Optional<MServerCommandLine> commandLine = MServerCommandLine.parse(aProgramAgruments);
+    if (commandLine.isEmpty()) {
       return;
     }
-    Map<CMDARG,String> cmd = MServerCommandLine.parseArgs(aProgramAgruments);
+    Map<CMDARG,String> cmd = commandLine.get().toLegacyMap();
     // config
     String configFileName = MServerConfigManager.DEFAULT_CONFIG_FILE;
     if (cmd.containsKey(CMDARG.gconf)) {

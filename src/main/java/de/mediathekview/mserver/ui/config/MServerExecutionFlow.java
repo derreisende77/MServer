@@ -34,12 +34,20 @@ public class MServerExecutionFlow {
       }
     }
     //
-    if (cmd.containsKey(CMDARG.flow) && cmd.get(CMDARG.flow).equalsIgnoreCase("importFilmlistIntoDB")) {
-      importFilmlistIntoDB();
-    } else if (cmd.containsKey(CMDARG.flow) && cmd.get(CMDARG.flow).equalsIgnoreCase("exportFilmListFromDB")) {
-      exportFilmListFromDB();
-    } else if (cmd.containsKey(CMDARG.flow) && cmd.get(CMDARG.flow).equalsIgnoreCase("checkAvailability")) {
-      checkAvailability();
+    if (cmd.containsKey(CMDARG.flow)) {
+      switch (cmd.get(CMDARG.flow)) {
+        case "importFilmlistIntoDB":
+          importFilmlistIntoDB();
+          break;
+        case "exportFilmListFromDB":
+          exportFilmListFromDB();
+          break;
+        case "checkAvailability":
+          checkAvailability();
+          break;
+        default:
+          throw new IllegalArgumentException("Unknown flow: " + cmd.get(CMDARG.flow));
+      }
     } else {
       startCrawlerFlow();
     }
